@@ -1,0 +1,6 @@
+---
+# tasks file for glusterfs
+- name: Include OS dependent variables
+  include_vars: "{{ ansible_os_family }}.yml"
+
+- include_tasks: "setup-{{ ansible_os_family }}.yml"

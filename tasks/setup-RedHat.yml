@@ -1,0 +1,47 @@
+- name: Install required packages
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ glusterfs_required_packages }}"
+
+- name: Install glusterfs packages
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ glusterfs_packages }}"
+
+- name: Ensure Gluster brick and mount directories exist.
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0775
+  with_items:
+    - "{{ glusterfs_brick_dir }}"
+    - "{{ glusterfs_mount_dir }}"
+
+- name: Start and enable glusterfs service
+  systemd:
+    name: "{{ glusterfs_service }}"
+    state: started
+    enabled: yes
+
+- name: Configure Gluster volume
+  gluster_volume:
+    state: present
+    name: "{{ glusterfs_brick_name }}"
+    brick: "{{ glusterfs_brick_dir }}"
+    replicas: "{{ glusterfs_replicas }}"
+    cluster: "{{ glusterfs_hosts }}"
+    host: "{{ inventory_hostname }}"
+    force: yes
+  run_once: true
+
+- name: Ensure Gluster volume is mounted
+  mount:
+    name: "{{ glusterfs_mount_dir }}"
+    src: "{{ inventory_hostname }}:/{{ glusterfs_brick_name }}"
+    fstype: glusterfs
+    opts: "defaults,_netdev"
+    state: mounted

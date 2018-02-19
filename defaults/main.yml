@@ -1,0 +1,10 @@
+---
+# defaults file for glusterfs
+glusterfs_brick_dir: /data
+glusterfs_mount_dir: /mnt/gv0
+
+glusterfs_brick_name: brick1
+
+glusterfs_hosts: ""
+
+glusterfs_replicas: 2
