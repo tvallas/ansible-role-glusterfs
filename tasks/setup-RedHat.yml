@@ -1,14 +1,12 @@
 - name: Install required packages
   yum:
-    name: "{{ item }}"
+    name: "{{ glusterfs_required_packages }}"
     state: present
-  with_items: "{{ glusterfs_required_packages }}"
 
 - name: Install glusterfs packages
   yum:
-    name: "{{ item }}"
+    name: "{{ glusterfs_packages }}"
     state: present
-  with_items: "{{ glusterfs_packages }}"
 
 - name: Ensure Gluster brick and mount directories exist.
   file:

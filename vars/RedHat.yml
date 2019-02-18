@@ -1,4 +1,4 @@
-glusterfs_default_release: centos-release-gluster38
+glusterfs_default_release: centos-release-gluster41
 glusterfs_required_packages:
   - "{{ glusterfs_default_release }}"
 
